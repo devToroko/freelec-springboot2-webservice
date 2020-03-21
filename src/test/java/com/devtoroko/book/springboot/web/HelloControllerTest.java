@@ -1,5 +1,6 @@
 package com.devtoroko.book.springboot.web;
 
+import static org.hamcrest.Matchers.is;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,24 @@ public class HelloControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @Test
+    /*@Test
     public void helloWillBeReturn() throws Exception {
         String hello = "hello";
         mvc.perform(get("/hello"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(hello));
+    }*/
+
+    @Test
+    public void helloDtoReturnTest() throws Exception {
+        String name = "hello";
+        int amount = 1000;
+
+        mvc.perform(get("/hello/dto")
+                        .param("name",name)
+                        .param("amount",String.valueOf(amount)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.name", is(name)))
+                    .andExpect(jsonPath("$.amount",is(amount)));
     }
 }
